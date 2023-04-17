@@ -34,17 +34,36 @@ button {
 input {
     grid-column: col / span 4;
     grid-row: row / span 1;
-    font-size: 40px;
+    font-size: 45px;
     padding: 0 10px;
     border: none;
     text-align: end;
+    background-color: grey;
+    color: white;
 }
+/*
+#display {
+    display: grid;
+    grid-column: col / span 4;
+    font-size: xx-large;
+    margin: 0px;
+    padding: 0 10px ;
+    border: 1px solid red;
+    align-items: center;
+    text-align:end;
+    background-color: grey;
+    color: white;
+}
+*/
 
 #btn-0 {
     grid-column: col / span 2;
-    /* grid-row: row / span 1; */
 }
 
 #btn-division, #btn-multiply, #btn-minus, #btn-plus, #btn-eq {
     background-color: orange;
+}
+
+#btn-ac, #btn-plusminus, #btn-modulo {
+    background-color: darkgray;
 }
