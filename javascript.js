@@ -18,21 +18,27 @@ for (i = 0; i < buttons.length; i++) {
 // Tracks numbers pressed with keyboard
 const keyCodes = () => {
   document.addEventListener('keydown', function (e) {
-    console.log(
-      'key', e.key,
-      'code', e.code,
-      'location', e.location
-    );
+    // console.log(
+    //   'key', e.key,
+    //   'code', e.code,
+    //   'location', e.location
+    // );
 
     // Store numbers pressed to an array
     if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
       numberOne += e.key;
+      input.value = input.value + e.key
     };
   });
 };
 
 keyCodes();
 
+document.getElementById("btn-ac").addEventListener("click", acFunction);
+
+function acFunction() {
+  numberOne = [];
+};
 
 function add(a, b) {
     return a + b;
@@ -53,7 +59,3 @@ function divide(a, b) {
 function operate(function_sign) {
 
 }
-
-const displayValue = document.querySelector('#display');
-
-console.log(displayValue.textContent);
