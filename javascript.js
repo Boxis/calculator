@@ -1,5 +1,5 @@
 
-let numberOne = [];
+let currentNum = [];
 
 var input = document.querySelector("#display");
 var buttons = document.querySelectorAll("button.button-number");
@@ -10,7 +10,7 @@ for (i = 0; i < buttons.length; i++) {
     input.value = input.value + event.currentTarget.value;
 
     if(event.currentTarget.value in [1,2,3,4,5,6,7,8,9,0]) {
-      numberOne += event.currentTarget.value;
+      currentNum += event.currentTarget.value;
     };
   });
 };
@@ -26,7 +26,7 @@ const keyCodes = () => {
 
     // Store numbers pressed to an array
     if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
-      numberOne += e.key;
+      currentNum += e.key;
       input.value = input.value + e.key
     };
   });
@@ -34,11 +34,24 @@ const keyCodes = () => {
 
 keyCodes();
 
+
+// AC button click
 document.getElementById("btn-ac").addEventListener("click", acFunction);
 
 function acFunction() {
-  numberOne = [];
+  currentNum = [];
 };
+
+
+// Plus Minus button
+document.getElementById("btn-plusminus").addEventListener("click", plusMinusBtn);
+
+function plusMinusBtn() {
+  console.log(Number(currentNum) * -1);
+  input.value = Number(currentNum) * -1;
+  currentNum = Number(currentNum) * -1;
+};
+
 
 function add(a, b) {
     return a + b;
