@@ -1,5 +1,8 @@
 
 let currentNum = '';
+let firstNum = '';
+let secondNum = '';
+let currentSign = '';
 
 var input = document.querySelector("#display");
 var buttons = document.querySelectorAll("button.button-number");
@@ -28,21 +31,29 @@ const keyCodes = () => {
     if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
       // console.log(e.key, e.code);
       currentNum += e.key;
-      input.value = input.value + e.key
+      input.value = input.value + e.key;
     } else if(e.key == '.' && !input.value.includes(".")) {
       currentNum += e.key;
       input.value = input.value + e.key
     } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/' ||
               e.key == '=') {
+
       console.log(e.key);
-      input.value = input.value + e.key
+
+      if (currentSign == '') {
+        currentSign = e.key;
+        operate();
+      } else if (e.key == '=') {
+        operate(currentSign);
+      }
+
     };
 
   });
-  
 };
 
 keyCodes();
+
 
 
 // AC button click
@@ -67,20 +78,55 @@ function plusMinusBtn() {
 
 function add(a, b) {
     return a + b;
-}
+};
 
 function subtract(a, b) {
     return a - b;
-}
+};
 
 function multiply(a, b) {
     return a * b;
-}
+};
 
 function divide(a, b) {
     return a/b;
-}
+};
+
 
 function operate(function_sign) {
 
-}
+  if (firstNum == '') {
+    firstNum = Number(currentNum);
+    currentNum = '';
+    input.value = '';
+    // keyCodes ();
+  } else if (secondNum == '') {
+    secondNum = Number(currentNum);
+    currentNum = '';
+  }
+
+  if (firstNum != '' && secondNum != '' && currentSign != '') {
+    if (function_sign == '+'){
+      firstNum = add(firstNum, secondNum);
+      console.log(firstNum);
+      secondNum = '';
+      input.value = firstNum;
+    } else if (function_sign == '-') {
+      firstNum = subtract(firstNum, secondNum);
+      console.log(firstNum);
+      secondNum = '';
+      input.value = firstNum;
+    } else {
+      console.log('hi');
+    };
+  }
+
+  
+  // if firstNum is blank then use currentNum
+  // otherwise set as secondNum
+  // then use currentSign to call a function
+  // update result to input.value and set it as currentNum
+  
+};
+
+
