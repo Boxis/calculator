@@ -41,20 +41,20 @@ input {
     background-color: grey;
     color: white;
 }
-/*
+
 #display {
     display: grid;
     grid-column: col / span 4;
     font-size: xx-large;
     margin: 0px;
     padding: 0 10px ;
-    border: 1px solid red;
+    border: 1px solid black;
     align-items: center;
     text-align:end;
     background-color: grey;
     color: white;
 }
-*/
+
 
 #btn-0 {
     grid-column: col / span 2;
