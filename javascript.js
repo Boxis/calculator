@@ -5,18 +5,37 @@ let secondNum = '';
 let currentSign = '';
 
 var input = document.querySelector("#display");
-var buttons = document.querySelectorAll("button.button-number");
+var buttons = document.querySelectorAll("button");
 
-// Tracks numbers of buttons clicked
+
 for (i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", function(event) {
-    input.value = input.value + event.currentTarget.value;
+  buttons[i].addEventListener("click", function(e) {
+    // input.value = input.value + e.currentTarget.value;
+    // Figure out how to identify what is clicked
+    console.log(
+      'value', e.target.value,
+      'key', e.target.id
+    );
     
-    if(event.currentTarget.value in [1,2,3,4,5,6,7,8,9,0]) {
-      currentNum += event.currentTarget.value;
+    if(e.target.value in [1,2,3,4,5,6,7,8,9,0]) {
+      input.value = input.value + e.target.value;
+      currentNum += e.target.value;
+    } else if(e.currentTarget.key == '.' && !input.value.includes(".")) {
+      currentNum += e.target.key;
+      input.value = input.value + e.key
+    } else if(e.target.value == '+' || e.target.value == '-' || e.target.value == '*' || 
+              e.target.value == '/' || e.target.value == '=') {
+
+      if (currentSign == '') {
+        currentSign = e.target.value;
+        operate();
+      } else if (e.value == '=') {
+        operate(currentSign);
+      }
     };
   });
 };
+
 
 // Tracks numbers pressed with keyboard
 const keyCodes = () => {
@@ -37,23 +56,18 @@ const keyCodes = () => {
       input.value = input.value + e.key
     } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/' ||
               e.key == '=') {
-
       console.log(e.key);
-
       if (currentSign == '') {
         currentSign = e.key;
         operate();
       } else if (e.key == '=') {
         operate(currentSign);
       }
-
     };
-
   });
 };
 
 keyCodes();
-
 
 
 // AC button click
@@ -62,6 +76,9 @@ document.getElementById("btn-ac").addEventListener("click", acFunction);
 function acFunction() {
   console.log('All Cleared');
   currentNum = '';
+  firstNum = '';
+  secondNum = '';
+  currentSign = '';
 };
 
 
