@@ -8,6 +8,14 @@ var input = document.querySelector("#display");
 var buttons = document.querySelectorAll("button");
 
 
+// TODO
+/*
+  -keys pressed
+  -keys clicked
+  -first num is total
+  -second num resets display
+*/
+
 for (i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", function(e) {
     // input.value = input.value + e.currentTarget.value;
@@ -20,15 +28,18 @@ for (i = 0; i < buttons.length; i++) {
     if(e.target.value in [1,2,3,4,5,6,7,8,9,0]) {
       input.value = input.value + e.target.value;
       currentNum += e.target.value;
-    } else if(e.currentTarget.key == '.' && !input.value.includes(".")) {
-      currentNum += e.target.key;
-      input.value = input.value + e.key
-    } else if(e.target.value == '+' || e.target.value == '-' || e.target.value == '*' || 
-              e.target.value == '/' || e.target.value == '=') {
+    } else if(e.target.value == '.' && !input.value.includes(".")) {
+      currentNum += e.target.value;
+      input.value = input.value + e.target.value;
+    } else if(e.target.value == '+' || e.target.value == '-' || 
+              e.target.value == '*' || e.target.value == '/' || 
+              e.target.value == '=') {
 
       if (currentSign == '') {
         currentSign = e.target.value;
         operate();
+      } else if (currentSign!= '') {
+        operate(currentSign);
       } else if (e.value == '=') {
         operate(currentSign);
       }
@@ -49,21 +60,30 @@ const keyCodes = () => {
     // Store numbers pressed to an array
     if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
       // console.log(e.key, e.code);
+      console.log(
+      'key', e.key,
+      'code', e.code,
+      'location', e.location
+    );
       currentNum += e.key;
       input.value = input.value + e.key;
     } else if(e.key == '.' && !input.value.includes(".")) {
       currentNum += e.key;
       input.value = input.value + e.key
     } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/' ||
-              e.key == '=') {
+              e.key == '=' || e.key == 'Enter') {
       console.log(e.key);
-      if (currentSign == '') {
-        currentSign = e.key;
-        operate();
-      } else if (e.key == '=') {
-        operate(currentSign);
-      }
-    };
+      currentSign = e.key;
+      operate(currentSign);
+      // if (currentSign == '' || currentSign != e.key) {
+      //   currentSign = e.key;
+      //   operate();
+      // } else if (e.key == '=') {
+      //   operate(currentSign);
+      // }
+    } else if(e.key == 'Escape') {
+      acFunction();
+    }
   });
 };
 
@@ -79,11 +99,13 @@ function acFunction() {
   firstNum = '';
   secondNum = '';
   currentSign = '';
+  display.value = '';
 };
 
 
 // Plus Minus button
-document.getElementById("btn-plusminus").addEventListener("click", plusMinusBtn);
+document.getElementById("btn-plusminus")
+  .addEventListener("click", plusMinusBtn);
 
 function plusMinusBtn() {
   console.log('Plus Minus');
