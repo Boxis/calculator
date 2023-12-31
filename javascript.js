@@ -3,170 +3,157 @@ let currentNum = '';
 let firstNum = '';
 let secondNum = '';
 let currentSign = '';
-let tempNum = '';
 
 var input = document.querySelector("#display");
 var buttons = document.querySelectorAll("button");
 
 
-// TODO
-/*
-  -keys pressed -> DONE
-  -add -> DONE
-  -subtract -> DONE
-  -multiply
-  -divide
-
-  -first num is total
-  -second num resets display
-  -keys clicked
-*/
-
+// Takes in input from clicks
 for (i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", function(e) {
-    // input.value = input.value + e.currentTarget.value;
-    // Figure out how to identify what is clicked
-    // console.log(
-    //   'value', e.target.value,
-    //   'key', e.target.id
-    // );
-    
-    if(e.target.value in [1,2,3,4,5,6,7,8,9,0]) {
-      input.value = input.value + e.target.value;
-      currentNum += e.target.value;
-    } else if(e.target.value == '.' && !input.value.includes(".")) {
-      currentNum += e.target.value;
-      input.value = input.value + e.target.value;
-    } else if(e.target.value == '+' || e.target.value == '-' || 
-              e.target.value == '*' || e.target.value == '/' || 
-              e.target.value == '=') {
-
-      if (currentSign == '') {
-        currentSign = e.target.value;
-        operate();
-      } else if (currentSign!= '') {
-        operate(currentSign);
-      } else if (e.value == '=') {
-        operate(currentSign);
-      }
-    };
+  buttons[i].addEventListener("click", function(event) {
+    e = event.target.value;
+    all_logic();
   });
 };
 
 
-// Tracks numbers pressed with keyboard
+// Takes in keyboard input
 const keyCodes = () => {
-  document.addEventListener('keydown', function (e) {
-    // console.log(
-    //   'key', e.key,
-    //   'code', e.code,
-    //   'location', e.location
-    // );
-
-    if(e.key == '=' || e.key == 'Enter' && currentSign != '') {
-      console.log('equals')
-      if (typeof(firstNum) == 'number' && typeof(secondNum) == 'string'){
-        console.log('equals 1');
-        secondNum = Number(currentNum);
-        operate(currentSign);
-      } else if (typeof(firstNum) == 'number' && currentNum != '') {
-        console.log('normal equals')
-        secondNum = Number(currentNum);
-        operate(currentSign);
-      } 
-    } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/') {
-      console.log('hitting sign key');
-
-      if(currentSign != e.key) {
-        console.log('setting sign 1');
-        currentSign = e.key;
-      }
-
-      for (let step = 0; step < 2; step++){
-        if(typeof(firstNum) == 'number' && typeof(secondNum) == 'string') {
-          console.log('setting second number')
-          secondNum = Number(currentNum);
-        } else if (typeof(firstNum) == 'string') {
-          console.log('setting first number')
-          firstNum = Number(currentNum);
-          currentNum = '';
-          currentSign = e.key;
-        } else if(typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
-          secondNum = Number(currentNum);
-          operate(currentSign);
-        }
-      }
-    } 
-    
-    if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
-      // console.log('key', e.key, 'code', e.code, 'location', e.location);
-      console.log('number hit');
-
-      if (typeof(firstNum) == 'number' && currentSign != '' && currentNum ==''){
-        console.log('clear currentNum & display.value');
-        currentNum = '';
-        display.value = '';
-      }
-      currentNum += e.key;
-      input.value = input.value + e.key;
-    } else if(e.key == '.' && !input.value.includes(".")) {
-      currentNum += e.key;
-      input.value = input.value + e.key
-    } else if(e.key == 'Escape') {
-      acFunction();
-    } else if(e.key == 'Backspace') {
-      display.value = display.value.slice(0, display.value.length - 1);
-      currentNum = currentNum.slice(0, currentNum.length - 1);
-    }
+  document.addEventListener('keydown', function (event) {
+    e = event.key;
+    all_logic();
   });
 };
+
+function all_logic(){
+  if(e == '=' || e == 'Enter' && currentSign != '') {
+    equals_press();
+  } else if(e == '+' || e == '-' || e == '*' || e == '/') {
+    operator_press(e);
+  } 
+  
+  if(e in [1,2,3,4,5,6,7,8,9,0, '.']) {
+    number_btns(e);
+  } else if(e == '.' && !currentNum.includes(".")) {
+    decimal(e);
+  } else if(e == 'Escape') {
+    acFunction();
+  } else if(e == 'Backspace') {
+    backspace();
+  }
+}
+
+function equals_press(){
+  // console.log('equals')
+  if (currentSign == '/' && secondNum ==0 ){
+    alert("You can't divde by 0!");
+    currentSign ='';
+    return;
+  }
+
+  if (typeof(firstNum) == 'number' && typeof(secondNum) == 'string'){
+    console.log('equals 1');
+    secondNum = Number(currentNum);
+    operate(currentSign);
+  } else if (typeof(firstNum) == 'number' && currentNum != '') {
+    console.log('normal equals')
+    if(currentNum != '.'){
+      secondNum = Number(currentNum);
+      operate(currentSign);
+    }
+  } 
+}
+
+function operator_press(e){
+  console.log('hitting sign key');
+
+  if(currentSign != e) {
+    console.log('setting sign');
+    equals_press();
+
+    if(currentSign == '-' && firstNum < 0) {
+      console.log('negative num');
+      plusMinus();
+    }
+    currentSign = e;
+  }
+
+  for (let step = 0; step < 2; step++){
+    if(typeof(firstNum) == 'number' && typeof(secondNum) == 'string') {
+      console.log('setting second number')
+      secondNum = Number(currentNum);
+    } else if (typeof(firstNum) == 'string') {
+      console.log('setting first number')
+      firstNum = Number(currentNum);
+      currentNum = '';
+      currentSign = e;
+    } 
+    else if(typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
+      console.log('operating after setting nums');
+      secondNum = Number(currentNum);
+      operate(currentSign);
+      firstNum = Number(currentNum);
+      currentNum = '';
+      currentSign = e;
+    }
+  }
+}
+
+function number_btns(e){
+  // console.log('number pressed');
+  if (typeof(firstNum) == 'number' && currentSign != '' && currentNum ==''){
+    // console.log('clear currentNum & display.value');
+    currentNum = '';
+    display.value = '';
+  }
+  currentNum += e;
+  input.value = input.value + e;
+};
+
+function decimal(e){
+  // input.value = '';
+  if(currentNum == ''){
+    display.value = '';
+  }
+  currentNum += e;
+  input.value = input.value + e;
+}
+
+function backspace(){
+  display.value = display.value.slice(0, display.value.length - 1);
+  currentNum = currentNum.slice(0, currentNum.length - 1);
+}
 
 
 // All Clear (AC) button click
 document.getElementById("btn-ac").addEventListener("click", acFunction);
 
 function acFunction() {
-  // console.log('All Cleared');
   currentNum = '';
   firstNum = '';
   secondNum = '';
   currentSign = '';
-  tempNum = '';
   display.value = '';
   console.clear()
 };
 
 
 // Plus Minus button
-document.getElementById("btn-plusminus")
-  .addEventListener("click", plusMinusBtn);
+document.getElementById("btn-plusminus").addEventListener("click", plusMinus);
 
-function plusMinusBtn() {
-  console.log('Plus Minus');
-  console.log(Number(currentNum) * -1);
+function plusMinus() {
   input.value = Number(currentNum) * -1;
   currentNum = Number(currentNum) * -1;
 };
 
 
-function add(a, b) {
-    return a + b;
-};
+// Opeation functions
+add = (a, b) => a + b;
+subtract = (a, b) => a - b;
+multiply = (a, b) => a * b;
+divide = (a, b) => a / b;
 
-function subtract(a, b) {
-    return a - b;
-};
-
-function multiply(a, b) {
-    return a * b;
-};
-
-function divide(a, b) {
-    return a/b;
-};
-
-
-function operation_select(function_sign) {
+function operate(function_sign) {
   console.log(firstNum, currentSign, secondNum);
   switch(function_sign){
     case '+': firstNum = add(firstNum, secondNum); 
@@ -178,22 +165,12 @@ function operation_select(function_sign) {
     case '/': firstNum = divide(firstNum, secondNum);
               break;
   }
-  input.value = firstNum;
+  input.value = Math.round(firstNum * 10000) / 10000;
   currentNum = input.value;
   firstNum = '';
   secondNum = '';
-}
-
-
-function operate(function_sign) {
-  if (typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
-    if (function_sign == '+') operation_select(function_sign);
-    else if (function_sign == '-') operation_select(function_sign);
-    else if (function_sign == '*') operation_select(function_sign);
-    else if (function_sign == '/') operation_select(function_sign);
-    else console.log("did't operate!");
-  }   
 };
+
 
 
 keyCodes();
