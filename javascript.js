@@ -1,7 +1,7 @@
 
 let currentNum = '';
 let firstNum = '';
-let secondNum = ''; //Do I need a second
+let secondNum = '';
 let currentSign = '';
 let tempNum = '';
 
@@ -65,39 +65,46 @@ const keyCodes = () => {
 
     if(e.key == '=' || e.key == 'Enter' && currentSign != '') {
       console.log('equals')
-      if (firstNum != '' && secondNum == ''){
+      if (typeof(firstNum) == 'number' && typeof(secondNum) == 'string'){
+        console.log('equals 1');
         secondNum = Number(currentNum);
+        console.log(firstNum, currentSign, secondNum, );
         operate(currentSign);
-      } else if (firstNum != '' && secondNum != '') {
+      } else if (typeof(firstNum) == 'number' && currentNum != '') {
+        console.log('normal equals')
+        secondNum = Number(currentNum);
+        console.log(firstNum, currentSign, secondNum, );
         operate(currentSign);
-      }
+      } 
     } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/') {
+      console.log('hitting sign key');
+
+      if(currentSign != e.key) {
+        console.log('setting sign 1');
+        currentSign = e.key;
+      }
+
       for (let step = 0; step < 2; step++){
-        if(firstNum != '' && secondNum == '' && currentSign != '') {
+        if(typeof(firstNum) == 'number' && typeof(secondNum) == 'string') {
           console.log('setting second number')
           secondNum = Number(currentNum);
-          operate(currentSign);
-        } else if (firstNum == '') {
+        } else if (typeof(firstNum) == 'string') {
           console.log('setting first number')
           firstNum = Number(currentNum);
           currentNum = '';
           currentSign = e.key;
-        } else if (firstNum != '' && secondNum == '' && currentSign != '') {
-          console.log('op key 2')
+        } else if(typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
           secondNum = Number(currentNum);
-          console.log('operating')
-          operate(currentSign)
-          firstNum = Number(currentNum)
-        } else if (currentSign != '') {
-          console.log('setting sign');
-          currentSign = e.key;
+          operate(currentSign);
         }
       }
     } 
     
     if(e.key in [1,2,3,4,5,6,7,8,9,0]) {
       // console.log('key', e.key, 'code', e.code, 'location', e.location);
-      if (firstNum != '' && currentSign != '') {
+      console.log('number hit');
+
+      if (typeof(firstNum) == 'number' && currentSign != '' && currentNum ==''){
         console.log('clear currentNum & display.value');
         currentNum = '';
         display.value = '';
@@ -163,17 +170,18 @@ function divide(a, b) {
 
 function operate(function_sign) {
 
-  if (firstNum != '' && secondNum != '' && currentSign != '') {
+  if (typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
+    console.log('operating!')
     if (function_sign == '+'){
       firstNum = add(firstNum, secondNum);
-      console.log(firstNum);
+      console.log('adding');
       input.value = firstNum;
       currentNum = input.value;
       firstNum = '';
       secondNum = '';
     } else if (function_sign == '-') {
       firstNum = subtract(firstNum, secondNum);
-      console.log(firstNum);
+      console.log('subtracting');
       input.value = firstNum;
       currentNum = input.value;
       firstNum = '';
@@ -181,9 +189,18 @@ function operate(function_sign) {
     } else {
       console.log('hi');
     };
-  }
-
-  
+  } 
+  // else if ((firstNum == 0 && secondNum != '') || (firstNum != 0 && secondNum == '')) {
+  //   console.log('operating 2');
+  //   if (function_sign == '-') {
+  //     firstNum = subtract(firstNum, secondNum);
+  //     console.log('subtracting');
+  //     input.value = firstNum;
+  //     currentNum = input.value;
+  //     firstNum = '';
+  //     secondNum = '';
+  //   }
+  // }
   // if firstNum is blank then use currentNum
   // otherwise set as secondNum
   // then use currentSign to call a function
