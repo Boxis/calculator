@@ -12,8 +12,8 @@ var buttons = document.querySelectorAll("button");
 // TODO
 /*
   -keys pressed -> DONE
-  -add -> DONE?
-  -subtract
+  -add -> DONE
+  -subtract -> DONE
   -multiply
   -divide
 
@@ -68,12 +68,10 @@ const keyCodes = () => {
       if (typeof(firstNum) == 'number' && typeof(secondNum) == 'string'){
         console.log('equals 1');
         secondNum = Number(currentNum);
-        console.log(firstNum, currentSign, secondNum, );
         operate(currentSign);
       } else if (typeof(firstNum) == 'number' && currentNum != '') {
         console.log('normal equals')
         secondNum = Number(currentNum);
-        console.log(firstNum, currentSign, secondNum, );
         operate(currentSign);
       } 
     } else if(e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/') {
@@ -168,44 +166,33 @@ function divide(a, b) {
 };
 
 
-function operate(function_sign) {
+function operation_select(function_sign) {
+  console.log(firstNum, currentSign, secondNum);
+  switch(function_sign){
+    case '+': firstNum = add(firstNum, secondNum); 
+              break;
+    case '-': firstNum = subtract(firstNum, secondNum); 
+              break;
+    case '*': firstNum = multiply(firstNum, secondNum);
+              break;
+    case '/': firstNum = divide(firstNum, secondNum);
+              break;
+  }
+  input.value = firstNum;
+  currentNum = input.value;
+  firstNum = '';
+  secondNum = '';
+}
 
+
+function operate(function_sign) {
   if (typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
-    console.log('operating!')
-    if (function_sign == '+'){
-      firstNum = add(firstNum, secondNum);
-      console.log('adding');
-      input.value = firstNum;
-      currentNum = input.value;
-      firstNum = '';
-      secondNum = '';
-    } else if (function_sign == '-') {
-      firstNum = subtract(firstNum, secondNum);
-      console.log('subtracting');
-      input.value = firstNum;
-      currentNum = input.value;
-      firstNum = '';
-      secondNum = '';
-    } else {
-      console.log('hi');
-    };
-  } 
-  // else if ((firstNum == 0 && secondNum != '') || (firstNum != 0 && secondNum == '')) {
-  //   console.log('operating 2');
-  //   if (function_sign == '-') {
-  //     firstNum = subtract(firstNum, secondNum);
-  //     console.log('subtracting');
-  //     input.value = firstNum;
-  //     currentNum = input.value;
-  //     firstNum = '';
-  //     secondNum = '';
-  //   }
-  // }
-  // if firstNum is blank then use currentNum
-  // otherwise set as secondNum
-  // then use currentSign to call a function
-  // update result to input.value and set it as currentNum
-  
+    if (function_sign == '+') operation_select(function_sign);
+    else if (function_sign == '-') operation_select(function_sign);
+    else if (function_sign == '*') operation_select(function_sign);
+    else if (function_sign == '/') operation_select(function_sign);
+    else console.log("did't operate!");
+  }   
 };
 
 
