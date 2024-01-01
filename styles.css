@@ -64,6 +64,6 @@ input {
     background-color: orange;
 }
 
-#btn-ac, #btn-plusminus, #btn-percent {
+#btn-ac, #btn-plusminus, #btn-del {
     background-color: darkgray;
 }

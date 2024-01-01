@@ -127,6 +127,8 @@ function decimal(e){
   input.value = input.value + e;
 }
 
+document.getElementById("btn-del").addEventListener("click", backspace);
+
 function backspace(){
   display.value = display.value.slice(0, display.value.length - 1);
   currentNum = currentNum.slice(0, currentNum.length - 1);
