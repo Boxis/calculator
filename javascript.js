@@ -45,9 +45,8 @@ function all_logic(){
 
 function equals_press(){
   // console.log('equals')
-  if (currentSign == '/' && secondNum ==0 ){
+  if (currentSign === '/' && currentNum == '0'){
     alert("You can't divde by 0!");
-    currentSign ='';
     return;
   }
 
@@ -69,6 +68,10 @@ function operator_press(e){
 
   if(currentSign != e) {
     console.log('setting sign');
+    if (currentSign == '/') {
+      currentSign = e;
+    }
+
     equals_press();
 
     if(currentSign == '-' && firstNum < 0) {
@@ -91,6 +94,7 @@ function operator_press(e){
     else if(typeof(firstNum) == 'number' && typeof(secondNum) == 'number') {
       console.log('operating after setting nums');
       secondNum = Number(currentNum);
+      if (secondNum === 0 ) return;
       operate(currentSign);
       firstNum = Number(currentNum);
       currentNum = '';
@@ -99,15 +103,19 @@ function operator_press(e){
   }
 }
 
+
 function number_btns(e){
   // console.log('number pressed');
   if (typeof(firstNum) == 'number' && currentSign != '' && currentNum ==''){
-    // console.log('clear currentNum & display.value');
     currentNum = '';
     display.value = '';
   }
   currentNum += e;
   input.value = input.value + e;
+  if(currentNum === '00'){
+    currentNum -=e;
+    input.value -= e;
+  }
 };
 
 function decimal(e){
@@ -165,7 +173,7 @@ function operate(function_sign) {
     case '/': firstNum = divide(firstNum, secondNum);
               break;
   }
-  input.value = Math.round(firstNum * 10000) / 10000;
+  input.value = Math.round(firstNum * 1000) / 1000;
   currentNum = input.value;
   firstNum = '';
   secondNum = '';
