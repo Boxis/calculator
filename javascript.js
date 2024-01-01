@@ -7,6 +7,15 @@ let currentSign = '';
 var input = document.querySelector("#display");
 var buttons = document.querySelectorAll("button");
 
+var DEBUG = false;
+if(!DEBUG){
+  if(!window.console) window.console = {};
+  var methods = ["log", "debug", "warn", "info"];
+  for(var i=0;i<methods.length;i++){
+      console[methods[i]] = function(){};
+ }
+}
+
 
 // Takes in input from clicks
 for (i = 0; i < buttons.length; i++) {
